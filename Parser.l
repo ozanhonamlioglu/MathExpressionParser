@@ -11,7 +11,6 @@ char lex_buffer[512];
 %}
 
 %%
-// write regular expressions to generate tokens
 
 \n {
     return PARSER_EOL;
@@ -36,12 +35,11 @@ char lex_buffer[512];
     return MATH_CPP_IPV4;
 }
 
-[] {
-    // ignore any whitespaces
+[ ] {
+
 }
 
-.{
-    // ignore any other non parsable characters
+. {
     printf("ignore non-parsable - %s\n", yytext);
 }
 
@@ -50,6 +48,8 @@ char lex_buffer[512];
 int main(int argc, char** argv) {
 
     while(1) {
+
+        printf("-----------\nInput -> ");
         fgets(lex_buffer, sizeof(lex_buffer), stdin);
 
         if(lex_buffer[0] == '\n') {
@@ -62,8 +62,8 @@ int main(int argc, char** argv) {
         int token_code;
         token_code = yylex();
 
-        while(token_code != '\n') {
-            printf("token_code = %d, token = %s, token_len = %d", token_code, yytext, yyleng);
+        while(token_code != PARSER_EOL) {
+            printf("token_code = %d, token = %s, token_len = %d\n", token_code, yytext, yyleng);
             token_code = yylex();
         }
     }

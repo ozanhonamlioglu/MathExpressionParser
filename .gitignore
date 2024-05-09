@@ -1,2 +1,7 @@
 cmake-build-debug
 .idea
+
+# custom
+exe
+lex.yy.c
+lex.yy.o
