@@ -1,12 +1,42 @@
 %{
-#include "MexprEnums.h"
+#include <assert.h>
+
 #include "ParserExport.h"
 
+typedef struct parser_stack_ {
+    int top;
+    lex_data_t data[MAX_MEXPR_LEN];
+} parser_stack_t;
+
 extern "C" int yylex();
+extern unsigned char lex_buffer[MAX_STRING_SIZE];
+extern parser_stack_t undo_stack;
 
 unsigned char lex_buffer[MAX_STRING_SIZE] = {0};
 unsigned char *curr_ptr = lex_buffer;
 
+
+parser_stack_t undo_stack = {-1, {0,0,0}};
+
+
+static void
+lex_push(lex_data_t lex_data) {
+    assert(undo_stack.top < MAX_MEXPR_LEN - 1);
+    undo_stack.data[++undo_stack.top] = lex_data;
+}
+
+static lex_data_t
+lex_pop() {
+    assert(undo_stack.top > -1);
+    lex_data_t res = undo_stack.data[undo_stack.top];
+    undo_stack.top--;
+    return res;
+}
+
+
+
+// user specific header files
+#include "MexprEnums.h"
 
 %}
 

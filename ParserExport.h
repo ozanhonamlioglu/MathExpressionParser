@@ -4,13 +4,13 @@
 #include <stdint.h>
 
 typedef struct lex_data_ {
-
     int token_code;
     int token_len;
     uint8_t *token_val;
 } lex_data_t;
 
 #define MAX_STRING_SIZE 512
+#define MAX_MEXPR_LEN 512
 
 /* Common Codes */
 #define PARSER_EOL  10000
